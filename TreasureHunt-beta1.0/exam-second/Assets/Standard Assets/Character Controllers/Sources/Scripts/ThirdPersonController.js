@@ -16,11 +16,10 @@ public var landAnimationSpeed : float = 1.0;
 private var _animation : Animation;
 private var initialPosition: Vector3=new Vector3(-3.5f,1.18f,-12.7f);
 private var isBegin:boolean=false;
-private var timeOfBox : int=3;
+private var timeOfBox : int=2;
 private var startTimeOfBox : float=0;
 private var gameSuccess : boolean= false;
 private var hitWater :boolean=false;
-private var delayWaterEffect : float = 1;
 enum CharacterState {
     Idle = 0,
 	Walking = 1,
@@ -298,25 +297,15 @@ function CalculateJumpVerticalSpeed (targetJumpHeight : float)
             Application.Quit();
         }
 
-        if(isBegin){
+        if(isBegin||hitWater){
             startTimeOfBox+=Time.deltaTime;
             if(startTimeOfBox>=timeOfBox){
-                isBegin=false;     
-                
-                startTimeOfBox=0;
-            }
-        }
-        if(hitWater){
-            delayWaterEffect-=Time.deltaTime;
-            startTimeOfBox+=Time.deltaTime;
-            Debug.Log(delayWaterEffect);
-            if(startTimeOfBox>=timeOfBox){
+                isBegin=false;
                 hitWater=false;
-                delayWaterEffect=1;
                 startTimeOfBox=0;
             }
         }
-               
+       
         if (!isControllable)
         {
             // kill all inputs if not controllable.
@@ -443,12 +432,9 @@ function CalculateJumpVerticalSpeed (targetJumpHeight : float)
             if(hit.gameObject.tag=='tree'){
                 gameSuccess=true;
             }
-            if(hit.gameObject.tag=='water'){                
+            if(hit.gameObject.tag=='water'){
+                transform.position=initialPosition;
                 hitWater=true;
-                if(delayWaterEffect<=0){
-                    transform.position=initialPosition;
-                    delayWaterEffect=2;
-                }
             }
         }
 
