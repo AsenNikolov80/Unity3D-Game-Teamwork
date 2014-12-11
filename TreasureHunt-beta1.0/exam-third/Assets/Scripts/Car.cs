@@ -8,6 +8,7 @@ public class Car : MonoBehaviour
     private Vector3 startPos = new Vector3(-28, 3, 0);
     private Terrain terrain;
     private MovingRock[] movingRocks;
+    private AudioSource carCrash;
 
     //private Ball[] movingBalls;
 
@@ -21,6 +22,7 @@ public class Car : MonoBehaviour
             movingRocks[i] = (MovingRock)arrayOfMovingRocks[i].GetComponent("MovingRock");
         }
         Screen.showCursor = false;
+        carCrash = (AudioSource)GameObject.Find("Car-Crash").GetComponent<AudioSource>();
         //var arrayOfMovingBalls = GameObject.FindGameObjectsWithTag("Ball");
         //movingBalls = new Ball[arrayOfMovingBalls.Length];
         //for (int i = 0; i < arrayOfMovingBalls.Length; i++)
@@ -38,7 +40,7 @@ public class Car : MonoBehaviour
         {
             Application.Quit();
         }
-        
+
         var input = new Vector3(Input.GetAxis("Horizontal") / speed, Input.GetAxis("Vertical") / speed, 0);
         transform.Translate(input);
     }
@@ -49,6 +51,7 @@ public class Car : MonoBehaviour
             || other.transform.tag == "MovingRock"
             || other.transform.tag == "Ball")
         {
+            carCrash.Play();
             Die();
         }
 
