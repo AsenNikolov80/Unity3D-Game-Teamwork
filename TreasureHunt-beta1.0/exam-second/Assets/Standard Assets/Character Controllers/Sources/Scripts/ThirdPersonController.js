@@ -411,13 +411,20 @@ function CalculateJumpVerticalSpeed (targetJumpHeight : float)
             GUI.Button (Rect (10,10,200,100), "Try to avoid moving objects");
         }
         if(gameSuccess){
-            GUI.Button(Rect(Screen.width/2-100,Screen.height/2-100,200,200),"You win!\nClick to proceed");
+            Screen.showCursor = true;
+            if(GUI.Button(Rect(Screen.width/2-100,Screen.height/2-100,200,200),"You win!\nClick to proceed"))
+            {
+                loadNextScene();
+            }
             
         }
         if(hitWater){
             GUI.Button(Rect(Screen.width/2-100,Screen.height/2-100,200,200),"You have drawned!\nDo not enter the water!");
         }
 
+    }
+    function loadNextScene(){
+        Application.LoadLevel("exam3-car");
     }
     
     function OnControllerColliderHit (hit : ControllerColliderHit )
